@@ -1,0 +1,55 @@
+@import "tailwindcss";
+
+@theme {
+  
+  --color-primary: #4A7538;     /* Emerald Green */
+  --color-secondary:#4A7538;    /* Teal */
+  --color-accent: #3B82F6;       /* Cool Blue */
+  --color-darkslate: #0F172A;    /* Dark Slate */
+  --color-brandbg: #F8FAFC;      /* Light Gray/Slate */
+  
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    background-color: var(--color-brandbg);
+    color: var(--color-darkslate);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  
+  /* Custom scrollbar for high-end SaaS feel */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #CBD5E1;
+    border-radius: 9999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #94A3B8;
+  }
+}
+
+@layer utilities {
+  .glass-panel {
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+  }
+  
+  .glass-panel-dark {
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+}

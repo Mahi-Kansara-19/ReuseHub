@@ -1,0 +1,19 @@
+# Dependencies
+node_modules/
+
+# Env files
+.env
+.env.local
+.env.production
+.env.development
+*.env
+
+# Builds
+dist/
+build/
+bin/
+obj/
+
+# OS/System files
+.DS_Store
+Thumbs.db
