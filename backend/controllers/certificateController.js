@@ -1,6 +1,21 @@
 const Certificate = require("../models/Certificate");
 const WasteListing = require("../models/WasteListing");
 
+// Helper function to parse quantity in kg, handling units like Tons, MT, etc.
+const parseQuantityInKg = (quantity, unit) => {
+  if (!quantity) return 0;
+  const str = String(quantity).trim();
+  const unitCombined = `${unit || ""} ${str}`.toLowerCase();
+  
+  const num = parseFloat(str.replace(/[^\d.]/g, ""));
+  if (isNaN(num)) return 0;
+  
+  if (unitCombined.includes("ton") || unitCombined.includes("mt") || unitCombined.includes("tonne")) {
+    return num * 1000;
+  }
+  return num;
+};
+
 /*
 --------------------------------------------------------
 GET ALL CERTIFICATES OF LOGGED-IN USER
@@ -17,13 +32,7 @@ const getCertificates = async (req, res) => {
     // Calculate total waste
     let totalWaste = 0;
     listings.forEach((listing) => {
-      // Convert quantity string into number
-      const qty = parseFloat(
-        String(listing.quantity).replace(/[^\d.]/g, "")
-      );
-      if (!isNaN(qty)) {
-        totalWaste += qty;
-      }
+      totalWaste += parseQuantityInKg(listing.quantity, listing.unit);
     });
 
     if (totalWaste < 5000) {
@@ -38,6 +47,7 @@ const getCertificates = async (req, res) => {
       });
       if (existingCertificate && existingCertificate.totalWaste !== totalWaste) {
         existingCertificate.totalWaste = totalWaste;
+        existingCertificate.issuedDate = new Date();
         await existingCertificate.save();
       }
     }
@@ -73,17 +83,8 @@ const generateCertificate = async (req, res) => {
 
     // Calculate total waste
     let totalWaste = 0;
-
     listings.forEach((listing) => {
-      // Convert quantity string into number
-      // Works for "20", "20kg", "20 kg"
-      const qty = parseFloat(
-        String(listing.quantity).replace(/[^\d.]/g, "")
-      );
-
-      if (!isNaN(qty)) {
-        totalWaste += qty;
-      }
+      totalWaste += parseQuantityInKg(listing.quantity, listing.unit);
     });
 
     // Check eligibility
@@ -99,14 +100,14 @@ const generateCertificate = async (req, res) => {
     });
 
     if (existingCertificate) {
-      if (existingCertificate.totalWaste !== totalWaste) {
-        existingCertificate.totalWaste = totalWaste;
-        await existingCertificate.save();
-      }
+      existingCertificate.totalWaste = totalWaste;
+      existingCertificate.issuedDate = new Date();
+      await existingCertificate.save();
+
       const populatedCert = await existingCertificate.populate("user", "businessName ownerName");
       return res.status(200).json({
         success: true,
-        message: "Certificate already exists.",
+        message: `Certificate updated successfully with latest total waste (${totalWaste} kg).`,
         certificate: populatedCert,
       });
     }

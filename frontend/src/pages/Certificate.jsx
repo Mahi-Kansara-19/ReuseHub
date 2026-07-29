@@ -28,10 +28,13 @@ const Certificate = () => {
       const ownListings = await getMyWasteListings();
       let total = 0;
       ownListings.forEach((listing) => {
-        const qty = parseFloat(
-          String(listing.quantity).replace(/[^\d.]/g, "")
-        );
+        const qtyStr = String(listing.quantity || "").trim();
+        const unitCombined = `${listing.unit || ""} ${qtyStr}`.toLowerCase();
+        let qty = parseFloat(qtyStr.replace(/[^\d.]/g, ""));
         if (!isNaN(qty)) {
+          if (unitCombined.includes("ton") || unitCombined.includes("mt") || unitCombined.includes("tonne")) {
+            qty *= 1000;
+          }
           total += qty;
         }
       });

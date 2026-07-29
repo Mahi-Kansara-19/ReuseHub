@@ -4,11 +4,12 @@ const CertificateCard = ({
   generating,
   totalListedWaste = 0,
 }) => {
+  const needsUpdate = certificate && Number(certificate.totalWaste) !== Number(totalListedWaste);
+
   return (
     <div className="bg-white rounded-3xl shadow-lg border border-slate-200 p-8">
 
       {/* Title */}
-
       <div className="flex items-center gap-4 mb-6">
         <div className="text-5xl">🏆</div>
 
@@ -18,30 +19,28 @@ const CertificateCard = ({
           </h2>
 
           <p className="text-slate-500">
-            Earn a certificate after listing 5000 kg or more of waste.
+            Earn & update your certificate after listing 5000 kg or more of waste.
           </p>
         </div>
       </div>
 
       {/* If certificate already exists */}
-
       {certificate ? (
         <>
-          <div className="grid md:grid-cols-3 gap-6 mb-8">
-
+          <div className="grid md:grid-cols-3 gap-6 mb-6">
             <div className="bg-slate-50 rounded-xl p-5">
               <p className="text-sm text-slate-500">
                 Certificate No
               </p>
 
-              <h3 className="font-bold mt-2 break-all">
+              <h3 className="font-bold mt-2 break-all text-slate-800">
                 {certificate.certificateNumber}
               </h3>
             </div>
 
             <div className="bg-slate-50 rounded-xl p-5">
               <p className="text-sm text-slate-500">
-                Total Waste
+                Certificate Total Waste
               </p>
 
               <h3 className="font-bold text-green-600 text-xl mt-2">
@@ -51,19 +50,43 @@ const CertificateCard = ({
 
             <div className="bg-slate-50 rounded-xl p-5">
               <p className="text-sm text-slate-500">
-                Status
+                Total Waste Listed
               </p>
 
-              <h3 className="font-bold text-blue-600 mt-2">
-                ✅ Certificate Generated
+              <h3 className="font-bold text-blue-600 text-xl mt-2">
+                {totalListedWaste} kg
               </h3>
             </div>
-
           </div>
 
-          <div className="bg-green-100 border border-green-300 rounded-xl p-4 text-green-700 font-medium">
-            Congratulations! You've earned your sustainability certificate.
-          </div>
+          {needsUpdate ? (
+            <div className="bg-amber-50 border border-amber-300 rounded-xl p-4 text-amber-800 mb-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+              <div>
+                <h4 className="font-bold">⚠️ Certificate Needs Update</h4>
+                <p className="text-sm mt-1">
+                  You have listed <strong>{totalListedWaste} kg</strong> total waste, but your certificate currently shows <strong>{certificate.totalWaste} kg</strong>.
+                </p>
+              </div>
+              <button
+                onClick={onGenerate}
+                disabled={generating}
+                className="bg-amber-600 hover:bg-amber-700 transition text-white px-6 py-2.5 rounded-xl font-semibold shrink-0 cursor-pointer disabled:opacity-50"
+              >
+                {generating ? "Updating..." : "🔄 Update Certificate"}
+              </button>
+            </div>
+          ) : (
+            <div className="bg-green-100 border border-green-300 rounded-xl p-4 text-green-700 font-medium mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <span>Congratulations! You've earned your sustainability certificate for <strong>{certificate.totalWaste} kg</strong>.</span>
+              <button
+                onClick={onGenerate}
+                disabled={generating}
+                className="bg-green-600 hover:bg-green-700 transition text-white px-5 py-2 rounded-xl text-sm font-semibold shrink-0 cursor-pointer disabled:opacity-50"
+              >
+                {generating ? "Updating..." : "🔄 Sync Certificate"}
+              </button>
+            </div>
+          )}
         </>
       ) : (
         <>
@@ -114,7 +137,7 @@ const CertificateCard = ({
           <button
             onClick={onGenerate}
             disabled={generating || totalListedWaste < 5000}
-            className="bg-green-600 hover:bg-green-700 transition text-white px-8 py-3 rounded-xl font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+            className="bg-green-600 hover:bg-green-700 transition text-white px-8 py-3 rounded-xl font-semibold cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {generating
               ? "Generating..."
