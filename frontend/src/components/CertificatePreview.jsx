@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { downloadCertificate } from "../utils/downloadCertificate";
+import stampImg from "../assets/stamp.png";
 
 const CertificatePreview = ({ certificate }) => {
   const certificateRef = useRef();
@@ -43,9 +44,9 @@ const CertificatePreview = ({ certificate }) => {
       <div className="flex justify-end mb-6">
         <button
           onClick={() => downloadCertificate(certificateRef)}
-          className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-semibold transition shadow-md cursor-pointer"
+          className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-semibold transition shadow-md cursor-pointer flex items-center gap-2"
         >
-          Download Certificate
+          <span>📥</span> Download Certificate
         </button>
       </div>
 
@@ -146,9 +147,14 @@ const CertificatePreview = ({ certificate }) => {
                     </div>
                   </div>
 
-                  {/* Right Side: Authority Signature */}
+                  {/* Right Side: Authority Signature & Official Stamp */}
                   <div className="text-right">
-                    <div className="inline-block text-center">
+                    <div className="inline-block text-center relative">
+                      <img 
+                        src={stampImg} 
+                        alt="ReuseHub Official Stamp" 
+                        className="w-28 h-28 mx-auto mb-1 object-contain mix-blend-multiply"
+                      />
                       <div className="border-t-2 border-slate-300 w-44 mx-auto mb-1"></div>
                       <h3 className="font-bold text-slate-800 text-xs">
                         ReuseHub Executive
