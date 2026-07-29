@@ -102,20 +102,30 @@ const Home = () => {
                 transition={{ duration: 0.5, delay: 0.3 }}
                 className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4"
               >
-                {user?.accountType === "supplier" ? (
-                  <Link
-                    to="/add-listing"
-                    className="w-full sm:w-auto inline-flex justify-center items-center space-x-2 bg-primary hover:bg-emerald-600 text-white font-extrabold px-8 py-3.5 rounded-xl shadow-md transition-all hover:-translate-y-0.5"
-                  >
-                    <span>List Commercial Waste</span>
-                    <ArrowRight className="h-4 w-4" />
-                  </Link>
+                {user ? (
+                  user.accountType === "supplier" ? (
+                    <Link
+                      to="/add-listing"
+                      className="w-full sm:w-auto inline-flex justify-center items-center space-x-2 bg-primary hover:bg-emerald-600 text-white font-extrabold px-8 py-3.5 rounded-xl shadow-md transition-all hover:-translate-y-0.5"
+                    >
+                      <span>List Commercial Waste</span>
+                      <ArrowRight className="h-4 w-4" />
+                    </Link>
+                  ) : (
+                    <Link
+                      to="/raise-demand"
+                      className="w-full sm:w-auto inline-flex justify-center items-center space-x-2 bg-primary hover:bg-emerald-600 text-white font-extrabold px-8 py-3.5 rounded-xl shadow-md transition-all hover:-translate-y-0.5"
+                    >
+                      <span>Raise a Demand</span>
+                      <ArrowRight className="h-4 w-4" />
+                    </Link>
+                  )
                 ) : (
                   <Link
-                    to="/raise-demand"
+                    to="/get-started"
                     className="w-full sm:w-auto inline-flex justify-center items-center space-x-2 bg-primary hover:bg-emerald-600 text-white font-extrabold px-8 py-3.5 rounded-xl shadow-md transition-all hover:-translate-y-0.5"
                   >
-                    <span>Raise a Demand</span>
+                    <span>Get Started</span>
                     <ArrowRight className="h-4 w-4" />
                   </Link>
                 )}
@@ -482,20 +492,30 @@ const Home = () => {
           <p className="text-emerald-100/70 text-sm sm:text-base font-semibold leading-relaxed mb-8 max-w-2xl mx-auto">
             Create a secure corporate portal profile today as a buyer or supplier, and begin listing or sourcing materials in under two minutes.
           </p>
-          {user?.accountType === "supplier" ? (
-            <Link
-              to="/add-listing"
-              className="w-full sm:w-auto inline-flex justify-center items-center space-x-2 bg-primary hover:bg-emerald-600 text-white font-extrabold px-8 py-3.5 rounded-xl shadow-md transition-all hover:-translate-y-0.5"
-            >
-              <span>List Commercial Waste</span>
-              <ArrowRight className="h-4 w-4" />
-            </Link>
+          {user ? (
+            user.accountType === "supplier" ? (
+              <Link
+                to="/add-listing"
+                className="w-full sm:w-auto inline-flex justify-center items-center space-x-2 bg-primary hover:bg-emerald-600 text-white font-extrabold px-8 py-3.5 rounded-xl shadow-md transition-all hover:-translate-y-0.5"
+              >
+                <span>List Commercial Waste</span>
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            ) : (
+              <Link
+                to="/raise-demand"
+                className="w-full sm:w-auto inline-flex justify-center items-center space-x-2 bg-primary hover:bg-emerald-600 text-white font-extrabold px-8 py-3.5 rounded-xl shadow-md transition-all hover:-translate-y-0.5"
+              >
+                <span>Raise a Demand</span>
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            )
           ) : (
             <Link
-              to="/raise-demand"
+              to="/get-started"
               className="w-full sm:w-auto inline-flex justify-center items-center space-x-2 bg-primary hover:bg-emerald-600 text-white font-extrabold px-8 py-3.5 rounded-xl shadow-md transition-all hover:-translate-y-0.5"
             >
-              <span>Raise a Demand</span>
+              <span>Get Started</span>
               <ArrowRight className="h-4 w-4" />
             </Link>
           )}
